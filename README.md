@@ -1,2 +1,2 @@
 # training
-A place to store learning resources
+A place to store training resources
