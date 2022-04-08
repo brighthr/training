@@ -1,0 +1,1 @@
+export const fetchPokemonByName = (name) => {console.log(name)}
