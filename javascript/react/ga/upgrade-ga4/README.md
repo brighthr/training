@@ -18,7 +18,7 @@ A Content Security Policy (CSP) is a way to specify which domains the applicatio
 
 This policy is saying that all 'scripts' (Javascript files) have to be either self hosted (i.e. *our* files) OR come from `static.cloudflareinsights.com` OR from any subdomain of `google-analytics.com`.
 
-GA4 doesn't log to GA through the same domain as our original GA implementation (`*.google-analytics.com`), therefore we need to include a new domain in our CSP: `*.googletagamanager.com` so when we try to log the new events using GA4 the script doesn't get blocked by the security policy.
+GA4 doesn't log to GA through the same domain as our original GA implementation (`*.google-analytics.com`), therefore we need to include a new domain in our CSP: `*.googletagmanager.com` so when we try to log the new events using GA4 the script doesn't get blocked by the security policy.
 
 Searching for `Content-Security-Policy` in your app should tell you if you have one, and where it is. If you do have one, you need to include `*.googletagmanager.com` after `*.google-analytics.com` in any relevant sections. If you are unsure about this step, either reach out to myself or Sean for more guidance.
 
