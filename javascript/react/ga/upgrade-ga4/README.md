@@ -103,15 +103,27 @@ export const trackEvent = ({
 
     // If we've initialised GA4 (the measurement ID was correct), then also log to GA4 using the new format of events
     if (ReactGA4.isInitialized) {
-		const ga4Params = {
-			action: `${action}${label ? ` ${label}` : ''}`
-		};
-		if (nonInteraction) {
-			ga4Params.nonInteraction = true;
-		}
-		ReactGA4.event(category, ga4Params);
+    	const ga4Params = {};
+	const actionString = `${action}${label ? ` ${label}` : ''}`;
+
+	// Chops an action string into multiple numbered action properties of 100 characters each
+	// This is because GA4 requires all event parameters to be <=100 characters in length
+
+	// e.g { action: 'first 100 characters', action2: 'next 100 characters' }
+	const getStrSection = i =>
+		actionString.substring((i - 1) * 100, i * 100);
+
+	for (let i = 1; i <= Math.ceil(actionString.length / 100); i++) {
+		ga4Params[`action${i === 1 ? '' : i}`] = getStrSection(i);
 	}
-	cb();
+
+	if (nonInteraction) {
+		ga4Params.nonInteraction = true;
+	}
+
+	ReactGA4.event(category, ga4Params);
+    }
+    cb();
 };
 ```
 
