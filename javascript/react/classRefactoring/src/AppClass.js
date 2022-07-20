@@ -1,5 +1,6 @@
 import React from 'react';
-import axios from 'axios';
+import { get } from './services/http';
+import config from './config';
 import './App.css';
 
 class AppClass extends React.Component {
@@ -13,27 +14,23 @@ class AppClass extends React.Component {
 		};
 	}
 
-    componentDidMount() {
-        const options = {
-            method: 'GET',
-            url: 'https://omgvamp-hearthstone-v1.p.rapidapi.com/info',
-            headers: {
-              'X-RapidAPI-Host': 'omgvamp-hearthstone-v1.p.rapidapi.com',
-              'X-RapidAPI-Key': '903a97b45fmshfc4bb309cd17b2cp16f23bjsn89247a334f3b'
-            }
-        };
+    async componentDidMount() {
+        const { HEARTHSTONE_API_URL } = config;
+        const { success, error, response } = await get(HEARTHSTONE_API_URL);
 
-        axios.request(options).then((response) => {
+        if(success) {
             this.setState({
                 gameData: response.data,
                 loadingGameData: false
             });
-        }).catch((error) => {
+        }
+
+        if(error) {
             this.setState({
                 errorLoadingGameData: true,
                 loadingGameData: false
             })
-        });
+        }
     }
 
     render() {
