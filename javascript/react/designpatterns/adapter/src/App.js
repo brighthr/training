@@ -1,33 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import './App.css';
+import {get} from './http'
 
 function App() {
   const [gameData, setGameData] = useState([]);
   const [loadingGameData, setLoadingGameData] = useState(true);
   const [errorLoadingGameData, setErrorLoadingGameData] = useState(false);
 
-  const options = {
-      method: 'GET',
-      url: 'https://omgvamp-hearthstone-v1.p.rapidapi.com/info',
-      headers: {
-        'X-RapidAPI-Host': 'omgvamp-hearthstone-v1.p.rapidapi.com',
-        'X-RapidAPI-Key': '903a97b45fmshfc4bb309cd17b2cp16f23bjsn89247a334f3b'
-      }
-  };
+
 
   useEffect(() => {
-      axios.request(options).then(function (response) {
-          setGameData(response.data);
-          setLoadingGameData(false);
-          console.log(response.data);
-      }).catch(function (error) {
-          setErrorLoadingGameData(true);
-          setLoadingGameData(false);
-          console.error(error);
-      });
-  }, [options])
+    const getRequest = async () => {
+      const {success,error, response} = await get('https://omgvamp-hearthstone-v1.p.rapidapi.com/info')
+
+      if (success) {
+        setGameData(response.data)
+      } 
+      if (error) {
+        setErrorLoadingGameData(true)
+      }
+      setLoadingGameData(false)
+    }
+
+    getRequest()
+  }, [])
 
   if (loadingGameData) {
     return <div>LOADING</div>
