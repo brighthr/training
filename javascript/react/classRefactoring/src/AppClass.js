@@ -1,3 +1,4 @@
+import React from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -22,12 +23,12 @@ class AppClass extends React.Component {
             }
         };
 
-        axios.request(options).then(function (response) {
+        axios.request(options).then((response) => {
             this.setState({
                 gameData: response.data,
                 loadingGameData: false
             });
-        }).catch(function (error) {
+        }).catch((error) => {
             this.setState({
                 errorLoadingGameData: true,
                 loadingGameData: false
