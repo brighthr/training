@@ -26,4 +26,8 @@ const get = (url) => {
     })
 }
 
-export { get }
+const http = {
+    get
+}
+
+export default http;

@@ -1,14 +1,14 @@
 import React from 'react';
-import { get } from './services/http';
+import http from './services/http';
 import config from './config';
 import './App.css';
 
 class AppClass extends React.Component {
-    constructor() {
-		super();
+    constructor(props) {
+		super(props);
 
 		this.state = {
-			gameData: [],
+			hearthstoneClasses: [],
 			loadingGameData: true,
 			errorLoadingGameData: false
 		};
@@ -16,11 +16,12 @@ class AppClass extends React.Component {
 
     async componentDidMount() {
         const { HEARTHSTONE_API_URL } = config;
+        const { get } = http;
         const { success, error, response } = await get(HEARTHSTONE_API_URL);
 
         if(success) {
             this.setState({
-                gameData: response.data,
+                hearthstoneClasses: response.data.classes,
                 loadingGameData: false
             });
         }
@@ -34,7 +35,7 @@ class AppClass extends React.Component {
     }
 
     render() {
-        const { gameData, loadingGameData, errorLoadingGameData } = this.state;
+        const { hearthstoneClasses, loadingGameData, errorLoadingGameData } = this.state;
 
         if (loadingGameData) {
             return <div>LOADING</div>
@@ -46,7 +47,7 @@ class AppClass extends React.Component {
 
         return (
             <ul className="grid grid-cols-4 gap-4">
-                {gameData.classes.map((hearthstoneClass) => 
+                {hearthstoneClasses.map((hearthstoneClass) => 
                     (
                         <li className="h-24 border border-red-500 p-4">{hearthstoneClass}</li>
                     )
